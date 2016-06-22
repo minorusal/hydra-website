@@ -303,7 +303,10 @@ switch (ENVIRONMENT)
 		echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
 		exit(3); // EXIT_CONFIG
 	}
-
+	if(!defined('URLPATH')){
+		$i = explode('index.php',$_SERVER['PHP_SELF']);
+		define('URLPATH',"http://".$_SERVER['SERVER_NAME'].$i[0]);
+	}
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
 	define('RESOURCESPATH', 'resources'.DIRECTORY_SEPARATOR);
 	define('ASSETSPATH', 'assets'.DIRECTORY_SEPARATOR);

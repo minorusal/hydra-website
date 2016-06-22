@@ -1,171 +1,79 @@
 <?php 
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Base_Controller extends CI_Controller {
-
- 	
-
-
-
     public function __construct(){
-
         parent::__construct();       
-
     }
-
-   
-
-    
-
     /**
-
     * Carga la base de datos de acuerdo al pais de origen
-
     * del usuario (mx,cr,etc)
-
     * @param string $db
-
     * @return void
-
     */
-
     public function load_database($bd){
-
     	if($bd!=""){
-
     		$load = $this->load->database($bd,TRUE);
-
 	    	if(!$load){
-
 	    		return true;
-
 	    	}
-
     	}
-
     }
 
-
-
     /**
-
 	* Finalizar la sesion activa
-
 	* @return void
-
 	*/
-
 	public function logout($redirect = true, $page='login'){
-
 		$this->load_database('global_system');
-
 		$this->session->sess_destroy();
-
 		if($redirect){
-
 			redirect($page);	
-
 		}
-
 	}
 
-
-
-
-
     /**
-
     * unifica las vistas header & footer con las vistas parseadas
-
     * de la seccion seleccionada
-
     * @param string $view
-
     * @param array $data
-
     * @param array $data_includes
-
     * @param string $ext
-
     * @return void
-
     */
-
-    public function load_dashboard($view, $data = array(), $data_includes = array() ,$ext = '.php'){
-
-		$this->vars = new config_vars();
-
-        $this->vars->load_vars();
-
+    public function load_dashboard($view, $data = array(), $data_includes = array() ,$ext = '.html'){
 		$ext          = ($ext!='.html') ? '': $ext;
-
 		$uri          = $this->uri->segment_array();
-
-		$includes     = $this->load_scripts($data_includes);
-
-		$data_modulos = $this->sites_panel;
-
-		$img_path     = './assets/avatar/users/';
-
-		$img_path_    = base_url().'assets/avatar/users/';
-
-		$avatar_image = ($this->session->userdata('avatar_user') =='' ) ? 'sin_foto.png' : $this->session->userdata('avatar_user');
-
-		$icon_root    = ($this->root_available()) ? 'fa fa-user-secret' : '';
-
-
-
-		$dataheader['site_title'] 	  = $this->vars->cfg['site_title'];
-
-		$dataheader['data_js']        = (!empty($includes)) ? $includes['js']  : '';
-
-		$dataheader['data_css']       = (!empty($includes)) ? $includes['css'] : '';
-
-		$dataheader['base_url']       = base_url();
-
-		$dataheader['panel_navigate'] = $this->sites_panel;
-
-		$dataheader['avatar_user']    = (file_exists($img_path.$avatar_image))? $img_path_.$avatar_image : $img_path_.'sin_foto.png';
-
-		$dataheader['avatar_pais']    = $this->session->userdata('avatar_pais');
-
-		$dataheader['user_mail']      = $this->session->userdata('mail');
-
-		$dataheader['user_name']      = $this->session->userdata('name');
-
-		$dataheader['user_perfil']    = $this->session->userdata('perfil');
-
-		$dataheader['close_session']  = $this->lang_item('close_session');
-
-		$dataheader['date']           = $this->lang_item('edit_perfil');
-
-		$dataheader['icon_root']      = $icon_root;
-
-		$dataheader['date']           = date('d/m/Y');
-
-		$dataheader['fecha_hoy']	  = $this->timestamp_complete();
-
-		$uri_nav                      = $this->array2string_lang(explode('/', $this->uri->uri_string()),array("navigate","es_ES"),' » ');
-
-		$dataheader['uri_string']     = $uri_nav;
-
-		
-
+		//$includes     = $this->load_scripts($data_includes);
+		//$data_modulos = $this->sites_panel;
+		//$img_path     = './assets/avatar/users/';
+		//$img_path_    = base_url().'assets/avatar/users/';
+		//$avatar_image = ($this->session->userdata('avatar_user') =='' ) ? 'sin_foto.png' : $this->session->userdata('avatar_user');
+		//$icon_root    = ($this->root_available()) ? 'fa fa-user-secret' : '';
+		//$dataheader['site_title'] 	  = $this->vars->cfg['site_title'];
+		//$dataheader['data_js']        = (!empty($includes)) ? $includes['js']  : '';
+		//$dataheader['data_css']       = (!empty($includes)) ? $includes['css'] : '';
+		//$dataheader['base_url']       = base_url();
+		//$dataheader['panel_navigate'] = $this->sites_panel;
+		//$dataheader['avatar_user']    = (file_exists($img_path.$avatar_image))? $img_path_.$avatar_image : $img_path_.'sin_foto.png';
+		//$dataheader['avatar_pais']    = $this->session->userdata('avatar_pais');
+		//$dataheader['user_mail']      = $this->session->userdata('mail');
+		//$dataheader['user_name']      = $this->session->userdata('name');
+		//$dataheader['user_perfil']    = $this->session->userdata('perfil');
+		//$dataheader['close_session']  = $this->lang_item('close_session');
+		//$dataheader['date']           = $this->lang_item('edit_perfil');
+		//$dataheader['icon_root']      = $icon_root;
+		//$dataheader['date']           = date('d/m/Y');
+		//$dataheader['fecha_hoy']	  = $this->timestamp_complete();
+		//$uri_nav                      = $this->array2string_lang(explode('/', $this->uri->uri_string()),array("navigate","es_ES"),' » ');
+		//$dataheader['uri_string']     = $uri_nav;
 		$datafooter                   = array('anio' => date('Y'));
-
-		
-
 		$data = (empty($data)) ? array() : $data;
-
-		$data['base_url']=$dataheader['base_url'];
-
-		$this->parser->parse('dashboard/header.html', $dataheader);
-
+		$data['RESOURCESPATH'] = RESOURCESPATH;
+		//$data['base_url']=$dataheader['base_url'];
+		//$this->parser->parse('dashboard/header.html', $dataheader);
 		$this->parser->parse($view.$ext, $data);
-
-		$this->parser->parse('dashboard/footer.html', $datafooter); 
-
+		//$this->parser->parse('dashboard/footer.html', $datafooter); 
 	}
 
 
@@ -193,9 +101,7 @@ class Base_Controller extends CI_Controller {
     */
 
 	public function load_view_unique($view, $data = array(), $autoload = false ,$ext = '.html'){
-
 		$data['RESOURCESPATH'] = RESOURCESPATH;
-
 		return $this->parser->parse($view.$ext, $data, $autoload);
 
 	}
