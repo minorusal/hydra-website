@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	*/
 	class Principal extends Base_Controller{
 		public function index(){
+			
 			$data['nosotros']	= URLPATH.'nosotros';
 			$data['portafolio']	= URLPATH.'portafolio';
 			$data['servicios']	= URLPATH.'servicios';
